@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>6관 노란 메테오 타이머</title>
+</head>
+<style>
+html, body {
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+}
+
+.div_body {
+	width: 600px;
+	height: 1000px;
+	margin: auto;
+}
+
+.div_headfoot {
+	width: 600px;
+	height: 20px;
+	margin: auto;
+	background-color: #008CBA;
+}
+
+.div_main_time {
+	width: 500px;
+	height: 150px;
+	margin: auto;
+	color: black;
+	font-size: 120px;
+	text-align: center;
+	vertical-align: middle;
+	line-height: 133px;
+}
+
+.div_check_time {
+	width: 250px;
+	height: 100px;
+	margin: auto;
+	margin-left: 49px;
+	margin-right: 49px;
+	font-size: 80px;
+	text-align: center;
+	vertical-align: middle;
+	line-height: 93px;
+}
+
+.div_cover {
+	display: flex;
+}
+
+.h1_main {
+	color: black;
+	font-size: 20px;
+	margin-left: 49px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+.h1_check {
+	color: black;
+	font-size: 20px;
+	margin-left: 49px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+.btn_check {
+	background-color: #555555;
+	border: none;
+	border-radius: 25px;
+	width: 200px; color : white;
+	padding: 15px 32px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 50px;
+	cursor: pointer;
+	color: white;
+}
+
+</style>
+<body>
+	<div id="div_header" class="div_headfoot"></div>
+	<div id="div_main_body" class="div_body">
+		<b style="color:red;font-size:13px;">* 재시작은 새로고침 하세요.</b>
+		<h1 class="h1_main">남은 시간</h1>
+		<div id="div_main_time" class="div_main_time">20:00</div>
+		<h1 class="h1_check">재생성 1</h1>
+		<div id="div_cover1" class="div_cover">
+			<div id="div_check1_time" class="div_check_time">11:11</div>
+			<button class="btn_check" onclick="time_check('div_check1_time')">Click</button>
+		</div>
+		<h1 class="h1_check">재생성 2</h1>
+		<div id="div_cover2" class="div_cover">
+			<div id="div_check2_time" class="div_check_time">11:11</div>
+			<button class="btn_check" onclick="time_check('div_check2_time')">Click</button>
+		</div>
+	</div>
+	<div id="div_footer" class="div_headfoot"></div>
+
+</body>
+
+<script>
+
+var main_time = 1199; //초
+var check_time1 = 0, check_time2 = 0;
+var ct = null;
+
+window.onload = function(){
+	ct = setInterval(count_time, 1000, "div_main_time");
+}
+
+function count_time(id) {
+	var txt = modifyNumber(Math.floor(main_time/60)) + ":" + modifyNumber((main_time%60));	
+	document.getElementById(id).innerHTML = txt;
+	
+	if((check_time1+10)>main_time && main_time>(check_time1-5)) document.getElementById('div_cover1').style.border = "8px solid red";
+	else document.getElementById('div_cover1').style.border = "0px solid black";
+	if((check_time2+10)>main_time && main_time>(check_time2-5)) document.getElementById('div_cover2').style.border = "8px solid red";
+	else document.getElementById('div_cover2').style.border = "0px solid black";
+	
+	main_time--;
+
+	if (main_time < 0) {
+		clearInterval(ct);	
+	}
+
+}
+
+function modifyNumber(time){
+    if(parseInt(time)<10){
+        return "0"+ time;
+    }
+    else
+        return time;
+}
+
+function time_check(id){
+	var txt;
+	if(id=="div_check1_time"){
+		check_time1 = main_time - 99;
+		txt = modifyNumber(Math.floor(check_time1/60)) + ":" + modifyNumber((check_time1%60));
+	}
+	else{
+		check_time2 = main_time - 99;
+		txt = modifyNumber(Math.floor(check_time2/60)) + ":" + modifyNumber((check_time2%60));
+	}
+
+	document.getElementById(id).innerHTML = txt;
+}
+
+
+</script>
+</html>
