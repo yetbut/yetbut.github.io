@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>6관 메테오 타이머</title>
+</head>
+<style>
+html, body {
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+}
+
+.no_drag {
+	-ms-user-select: none;
+	-moz-user-select: -moz-none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	user-select: none;
+}
+
+.div_body {
+	width: 700px;
+	height: 1000px;
+	margin: auto;
+}
+
+.div_headfoot {
+	width: 700px;
+	height: 20px;
+	margin: auto;
+	background-color: #008CBA;
+}
+
+.tbl_main {
+	border: 1px solid black;
+	width: 350px;
+	height: 350px;
+	transform: rotate(45deg);
+	margin-top: 100px;
+	margin-right: auto;
+	margin-left: auto;
+	margin-bottom: auto;
+}
+
+tr, td {
+	border: 1px solid black;
+}
+
+td {
+	width: 109px;
+	height: 109px;
+	cursor: pointer;
+}
+
+/*  .div_cover {
+	padding: 90px;
+} */
+.div_check_time {
+	width: 250px;
+	height: 50px;
+	margin: auto;
+	font-size: 30px;
+	text-align: center;
+}
+
+.btn_check {
+	background-color: #555555;
+	border: none;
+	border-radius: 25px;
+	width: 200px;
+	color: white;
+	padding: 10px 22px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 33px;
+	cursor: pointer;
+	color: white;
+}
+
+.tbl_main td div {
+	text-align: center;
+	transform: rotate(-45deg);
+	font-size: 30px;
+	font-weight: bold;
+}
+
+.div_main_time {
+	width: 400px;
+	height: 150px;
+	margin: auto;
+	color: black;
+	font-size: 100px;
+	text-align: center;
+	vertical-align: middle;
+	line-height: 133px;
+}
+
+</style>
+
+<body class="no_drag">
+	<div id="div_header" class="div_headfoot"></div>
+	<div id="div_main_body" class="div_body">
+		<div id="div_cover1" class="div_cover">
+			<div id="div_check1_time" class="div_check_time">00:00</div>
+			<div id="div_check1_time_btn" class="div_check_time"><button class="btn_check" onclick="time_check('div_check1_time')">Click1</button></div>
+		</div>
+		<table id="tbl_main" class="tbl_main">
+			<tr>
+				<td id="td_1"><div id="td_div_1">3</div></td>
+				<td id="td_2"><div id="td_div_2">3</div></td>
+				<td id="td_3"><div id="td_div_3">3</div></td>
+			</tr>
+			<tr>
+				<td id="td_4"><div id="td_div_4">3</div></td>
+				<td id="td_5"><div id="td_div_5">14</div></td>
+				<td id="td_6"><div id="td_div_6">3</div></td>
+			</tr>
+			<tr>
+				<td id="td_7"><div id="td_div_7">3</div></td>
+				<td id="td_8"><div id="td_div_8">3</div></td>
+				<td id="td_9"><div id="td_div_9">3</div></td>
+			</tr>
+		</table>
+		<div id="div_cover2" style="padding-top:90px;" class="div_cover">
+			<div id="div_check2_time" class="div_check_time">00:00</div>
+			<div id="div_check2_time_btn" class="div_check_time"><button class="btn_check" onclick="time_check('div_check2_time')">Click2</button></div>
+		</div>
+		<div id="div_main_time" class="div_main_time">20:00</div>
+	</div>
+	<!-- <div id="div_footer" class="div_headfoot"></div> -->
+
+</body>
+
+<script src="./jquery-3.6.0.min.js"></script>
+
+<script>
+	var main_time = 1199; //초
+	var interval_main = null;
+	var check_time1 = 0, check_time2 = 0;
+	
+	//interval 0~9 == td_1~9
+	var interval = [
+		{time:100, obj:null, count:3},
+		{time:100, obj:null, count:3},
+		{time:100, obj:null, count:3},
+		{time:100, obj:null, count:3},
+		{time:100, obj:null, count:14},
+		{time:100, obj:null, count:3},
+		{time:100, obj:null, count:3},
+		{time:100, obj:null, count:3},
+		{time:100, obj:null, count:3}
+	];
+
+	window.onload = function() {
+		interval_main = setInterval(count_main_time, 1000, "div_main_time");
+		var tag = null;
+		for (var i = 0; i < 10; i++) {
+			$("#td_" + i).click(click_td);
+		}
+
+		tag = null;
+	}
+
+	function click_td(e) {
+		var dom = e.currentTarget.childNodes[0];
+		var index = dom.id.split('_')[2]-1;
+		var target = interval[Number(index)];
+		target.count -= 1;
+		
+		if (target.count > 0) {
+			dom.innerHTML = target.count;
+		} else {
+			$('#' + e.currentTarget.id).off('click');
+			count_td_time(dom.id, target);
+			target.obj = setInterval(count_td_time, 1000, dom.id, target);
+		}
+	}
+
+	function count_td_time(id, target) {
+		target.time-=1;
+		var txt = modifyNumber(Math.floor(target.time / 60)) + ":"	+ modifyNumber((target.time % 60));
+		$('#' + id).html(txt);
+		console.log(target);
+
+		if (target.time == 0) {
+			clearInterval(target.obj);
+			target.time = 100;
+			if (id != "td_div_5") target.count = 3;	
+			else target.count = 14;
+			$('#' + id).html(target.count);
+			$('#' + id).parent().click(click_td);
+		}
+	}
+	
+	function count_main_time(id) {
+		var txt = modifyNumber(Math.floor(main_time/60)) + ":" + modifyNumber((main_time%60));	
+		$('#' + id).html(txt);
+		main_time -= 1;
+		if (main_time < 0) {
+			clearInterval(interval_main);	
+		}
+	}
+	
+	function time_check(id){
+		var txt = "";
+		if(id=="div_check1_time"){//1,2,4,5
+			check_time1 = main_time - 99;
+			txt = modifyNumber(Math.floor(check_time1/60)) + ":" + modifyNumber((check_time1%60));
+			
+			if(interval[0].count > 0){
+				interval[0].count = 0;
+				$('#td_1').off('click');
+				count_td_time('td_div_1', interval[0]);
+				interval[0].obj = setInterval(count_td_time, 1000, 'td_div_1', interval[0]);
+			}
+			if(interval[1].count > 0){
+				interval[1].count = 0;
+				$('#td_2').off('click');
+				count_td_time('td_div_2', interval[1]);
+				interval[1].obj = setInterval(count_td_time, 1000, 'td_div_2', interval[1]);
+			}
+			if(interval[3].count > 0){
+				interval[3].count = 0;
+				$('#td_4').off('click');
+				count_td_time('td_div_4', interval[3]);
+				interval[3].obj = setInterval(count_td_time, 1000, 'td_div_4', interval[3]);
+			}
+			
+			interval[4].count -= 3;
+			$('#td_div_5').html(interval[4].count);
+			
+		}
+		else{//5,6,8,9
+			check_time2 = main_time - 99;
+			txt = modifyNumber(Math.floor(check_time2/60)) + ":" + modifyNumber((check_time2%60));
+			
+			if(interval[5].count > 0){
+				interval[5].count = 0;
+				$('#td_6').off('click');
+				count_td_time('td_div_6', interval[5]);
+				interval[5].obj = setInterval(count_td_time, 1000, 'td_div_6', interval[5]);
+			}
+			if(interval[7].count > 0){
+				interval[7].count = 0;
+				$('#td_8').off('click');
+				count_td_time('td_div_8', interval[7]);
+				interval[7].obj = setInterval(count_td_time, 1000, 'td_div_8', interval[7]);
+			}
+			if(interval[8].count > 0){
+				interval[8].count = 0;
+				$('#td_9').off('click');
+				count_td_time('td_div_9', interval[8]);
+				interval[8].obj = setInterval(count_td_time, 1000, 'td_div_9', interval[8]);
+			}
+			
+			interval[4].count -= 3;
+			$('#td_div_5').html(interval[4].count);
+		}
+		$('#' + id).html(txt);
+	}
+
+
+	function modifyNumber(time) {
+		if (parseInt(time) < 10) {
+			return "0" + time;
+		} else
+			return time;
+	}
+
+</script>
+</html>
