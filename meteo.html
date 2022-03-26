@@ -184,7 +184,7 @@ td {
 		target.time-=1;
 		var txt = modifyNumber(Math.floor(target.time / 60)) + ":"	+ modifyNumber((target.time % 60));
 		$('#' + id).html(txt);
-		console.log(target);
+		//console.log(target);
 
 		if (target.time == 0) {
 			clearInterval(target.obj);
