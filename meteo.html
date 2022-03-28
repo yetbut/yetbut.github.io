@@ -175,6 +175,7 @@ td {
 			dom.innerHTML = target.count;
 		} else {
 			$('#' + e.currentTarget.id).off('click');
+			$('#' + e.currentTarget.id).css('backgroundColor','#8D8D8D');
 			count_td_time(dom.id, target);
 			target.obj = setInterval(count_td_time, 1000, dom.id, target);
 		}
@@ -193,6 +194,7 @@ td {
 			else target.count = 14;
 			$('#' + id).html(target.count);
 			$('#' + id).parent().click(click_td);
+			$('#' + id).parent().css('backgroundColor','#FFFFFF');
 		}
 	}
 	
@@ -214,18 +216,21 @@ td {
 			if(interval[0].count > 0){
 				interval[0].count = 0;
 				$('#td_1').off('click');
+				$('#td_1').css('backgroundColor','#8D8D8D');
 				count_td_time('td_div_1', interval[0]);
 				interval[0].obj = setInterval(count_td_time, 1000, 'td_div_1', interval[0]);
 			}
 			if(interval[1].count > 0){
 				interval[1].count = 0;
 				$('#td_2').off('click');
+				$('#td_2').css('backgroundColor','#8D8D8D');
 				count_td_time('td_div_2', interval[1]);
 				interval[1].obj = setInterval(count_td_time, 1000, 'td_div_2', interval[1]);
 			}
 			if(interval[3].count > 0){
 				interval[3].count = 0;
 				$('#td_4').off('click');
+				$('#td_4').css('backgroundColor','#8D8D8D');
 				count_td_time('td_div_4', interval[3]);
 				interval[3].obj = setInterval(count_td_time, 1000, 'td_div_4', interval[3]);
 			}
@@ -241,18 +246,21 @@ td {
 			if(interval[5].count > 0){
 				interval[5].count = 0;
 				$('#td_6').off('click');
+				$('#td_6').css('backgroundColor','#8D8D8D');
 				count_td_time('td_div_6', interval[5]);
 				interval[5].obj = setInterval(count_td_time, 1000, 'td_div_6', interval[5]);
 			}
 			if(interval[7].count > 0){
 				interval[7].count = 0;
 				$('#td_8').off('click');
+				$('#td_8').css('backgroundColor','#8D8D8D');
 				count_td_time('td_div_8', interval[7]);
 				interval[7].obj = setInterval(count_td_time, 1000, 'td_div_8', interval[7]);
 			}
 			if(interval[8].count > 0){
 				interval[8].count = 0;
 				$('#td_9').off('click');
+				$('#td_9').css('backgroundColor','#8D8D8D');
 				count_td_time('td_div_9', interval[8]);
 				interval[8].obj = setInterval(count_td_time, 1000, 'td_div_9', interval[8]);
 			}
